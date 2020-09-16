@@ -1,0 +1,74 @@
+server:
+  port: 7070
+
+---
+
+spring:
+  profiles: default
+  cloud:
+    gateway:
+      routes:
+        - id: reservation
+          uri: http://localhost:7071
+          predicates:
+            - Path=/reservations/**,/db_reservation/**
+        - id: assignment
+          uri: http://localhost:7072
+          predicates:
+            - Path=/assignments/**,/db_assignment/**
+        - id: bread
+          uri: http://localhost:7073
+          predicates:
+            - Path=/breads/**,/db_bread/**
+        - id: page
+          uri: http://localhost:7074
+          predicates:
+            - Path=/pages/**,/db_page/**
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+
+---
+
+spring:
+  profiles: docker
+  cloud:
+    gateway:
+      routes:
+        - id: reservation
+          uri: http://reservation:8080
+          predicates:
+            - Path=/reservations/**,/db_reservation/**
+        - id: assignment
+          uri: http://assignment:8080
+          predicates:
+            - Path=/assignments/**,/db_assignment/**
+        - id: bread
+          uri: http://bread:8080
+          predicates:
+            - Path=/breads/**,/db_bread/**
+        - id: page
+          uri: http://page:8080
+          predicates:
+            - Path=/pages/**,/db_page/**
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+server:
+  port: 8080
